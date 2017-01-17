@@ -1,31 +1,28 @@
 jQuery(function($){
-	$('form').submit(function(e){
-		e.preventDefault(); // prevent the default behavior.
-
-		var $searchField = $("#search");
-		var $spinner = $('<div class="spinner centered">'+
+	//Initializing variables
+	var $searchField = $("#search"),
+		$spinner = $('<div class="spinner centered">'+
 			'<div class="rect1"></div>'+
 			'<div class="rect2"></div>'+
 			'<div class="rect3"></div>'+
 			'<div class="rect4"></div>'+
 			'<div class="rect5"></div>'+
-			'</div>');
+			'</div>'),
+		omdbMovieURL = "http://www.omdbapi.com/?s=";
+	$('form').submit(function(e){
+		e.preventDefault(); // prevent the default behavior.
 
-		var omdbMovieURL = "http://www.omdbapi.com/?s=";
-		var movieSearch = $searchField.val();
-		var yearSearch = $('#year').val();
-
-		var omdbMovieRequest = omdbMovieURL + encodeURIComponent(movieSearch) +"&y="+ encodeURIComponent(yearSearch);
-
-
-		var moviesHTML = "",
-			img = "";
+		var movieSearch = $searchField.val(),
+		yearSearch = $('#year').val(),
+		omdbMovieRequest = omdbMovieURL + encodeURIComponent(movieSearch) +"&y="+ encodeURIComponent(yearSearch),
+		moviesHTML = "",
+		img = "";
 
 		$('#movies').html($spinner);
 
-		console.log(omdbMovieRequest);
-		//$spinner.removeClass("hide");
-
+		/*
+		The callback function to be called when ajax receives data
+		 */
 		function displayMovies(data) {
 			if(data.Response === "True"){
 
@@ -52,33 +49,70 @@ jQuery(function($){
 			else{
 				if(data.Error === "Movie not found!"){
 					//put error code for no found movies here
-					moviesHTML = " <li class='no-movies centered'>" +
-						"<i class='material-icons icon-help'>help_outline</i>"+
-						"No movies found that match: "+ movieSearch +".</li>";
+					setMoviesOnError("No movies found that match: "+movieSearch+".");
 				}
 				else if(data.Error === "Something went wrong."){
 					//error code for something went wrong.
-					moviesHTML = " <li class='no-movies centered'>" +
-						"<i class='material-icons icon-help'>help_outline</i>"+
-						"An error occured in processing your request, please try again.</li>";
+					setMoviesOnError("An error occurred in processing your request, please try again.");
 				}
 				else{
 					//final statement for errors
-					moviesHTML = " <li class='no-movies centered'>" +
-						"<i class='material-icons icon-help'>help_outline</i>"+
-						"Something unexpected occured, please try again.</li>";
+					setMoviesOnError("Something unexpected occurred, please try again.");
 				}
-
-				console.log("did not find movies");
-				//code the no movies found etc.
-
 			}
 			$('#movies').html(moviesHTML);
 		}
 
-		$.getJSON(omdbMovieRequest, displayMovies);
+		//invoking the ajax call method to get the json data from the omdb.
+		$.getJSON(omdbMovieRequest, displayMovies).fail(
+			//This is the callback function to be called when the ajax request fails.
+			function(jqXHR){
+			setMoviesOnError("An error occurred while connecting with the movie Server, please try to search again.");
+			$('#movies').html(moviesHTML);
+
+		}); //end fail function
+
+		function setMoviesOnError(str){
+			moviesHTML = " <li class='no-movies centered'>" +
+				"<i class='material-icons icon-help'>help_outline</i>"+ str +"</li>";
+		}
 
 	}); // end submit function
+
+
+	/*
+	code to detect global variables.
+	 */
+
+	//var differences = {},
+	//	exceptions,
+	//	globals = {},
+	//	ignoreList = (prompt('Ignore filter (comma sep)?', '') || '').split(','),
+	//	i = ignoreList.length,
+	//	iframe = document.createElement('iframe');
+	//while (i--) {
+	//	globals[ignoreList[i]] = 1
+	//}
+	//for (i in window) {
+	//	differences[i] = {
+	//		'type': typeof window[i],
+	//		'val': window[i]
+	//	}
+	//}
+	//iframe.style.display = 'none';
+	//document.body.appendChild(iframe);
+	//iframe.src = 'about:blank';
+	//iframe = iframe.contentWindow || iframe.contentDocument;
+	//for (i in differences) {
+	//	if (typeof iframe[i] != 'undefined') delete differences[i];
+	//	else if (globals[differences[i].type]) delete differences[i]
+	//}
+	//exceptions = 'addEventListener,document,location,navigator,window'.split(',');
+	//i = exceptions.length;
+	//while (--i) {
+	//	delete differences[exceptions[i]]
+	//}
+	//console.dir(differences);
 
 
 
