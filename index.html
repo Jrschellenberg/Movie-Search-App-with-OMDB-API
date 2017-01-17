@@ -5,6 +5,7 @@
   <title>Movie Search</title>
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/spinner.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,10 +21,9 @@
              Comment out <label> and <input> below to filter search by year
              ============================================================== -->
 
-            <!-- 
+
               <label class="is-hidden" for="year">Any Year</label>
-              <input type="text" maxlength="4" name="year" id="year" placeholder="Year"> 
-            -->
+              <input type="text" maxlength="4" name="year" id="year" placeholder="Year">
 
         <button type="submit" id="submit" class="search-button"><i class="material-icons icn-search">search</i></button>
       </form>   
@@ -32,7 +32,8 @@
 
   <div class="main-content clearfix">
     <ul id="movies" class="movie-list">
-      <li class="desc">
+
+      <li class="desc centered">
         <i class="material-icons icn-movie">movie</i>
         Search movie titles and TV shows
       </li>

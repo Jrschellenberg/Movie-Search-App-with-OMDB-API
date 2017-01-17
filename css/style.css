@@ -273,3 +273,15 @@ button {
     clear: left;
   }
 }
+
+
+/* Class used from https://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/
+Used to center element inside it's parent.
+*/
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
