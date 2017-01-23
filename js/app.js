@@ -12,21 +12,22 @@ jQuery(function($){
 	$('form').submit(function(e){
 		e.preventDefault(); // prevent the default behavior.
 
-		var movieSearch = $searchField.val(),
-		yearSearch = $('#year').val(),
-		omdbMovieRequest = omdbMovieURL + encodeURIComponent(movieSearch) +"&y="+ encodeURIComponent(yearSearch),
+		//Initializing variables required on each submission
+		var movieSearch = $searchField.val(), //Grabbing movie title search
+		yearSearch = $('#year').val(),  //Grabbing year searched
+		omdbMovieRequest = omdbMovieURL + encodeURIComponent(movieSearch) +"&y="+ encodeURIComponent(yearSearch), //encoding & formulate string
 		moviesHTML = "",
 		img = "";
 
 		$('#movies').html($spinner);
+		//console.log(omdbMovieRequest);  //Logging the GET request string
 
 		/*
 		The callback function to be called when ajax receives data
 		 */
 		function displayMovies(data) {
 			if(data.Response === "True"){
-
-				console.log("found movies!");
+				//Code for if ajax returned with information
 				$.each(data.Search, function(i, movies){
 					img = '<a href="http://www.imdb.com/title/'+movies.imdbID+
 						'/"><img class="movie-poster" src="'+ movies.Poster +'"></a>';
@@ -42,8 +43,6 @@ jQuery(function($){
 						'</span></li>'
 
 				}); // end of each
-
-				//do this code if it found movies
 			}
 			//Error cases
 			else{
@@ -72,48 +71,14 @@ jQuery(function($){
 
 		}); //end fail function
 
+		/*
+		A function to Set the error message html and display the error message
+		str: A type String containing the error message.
+		 */
 		function setMoviesOnError(str){
 			moviesHTML = " <li class='no-movies centered'>" +
 				"<i class='material-icons icon-help'>help_outline</i>"+ str +"</li>";
 		}
 
 	}); // end submit function
-
-
-	/*
-	code to detect global variables.
-	 */
-
-	//var differences = {},
-	//	exceptions,
-	//	globals = {},
-	//	ignoreList = (prompt('Ignore filter (comma sep)?', '') || '').split(','),
-	//	i = ignoreList.length,
-	//	iframe = document.createElement('iframe');
-	//while (i--) {
-	//	globals[ignoreList[i]] = 1
-	//}
-	//for (i in window) {
-	//	differences[i] = {
-	//		'type': typeof window[i],
-	//		'val': window[i]
-	//	}
-	//}
-	//iframe.style.display = 'none';
-	//document.body.appendChild(iframe);
-	//iframe.src = 'about:blank';
-	//iframe = iframe.contentWindow || iframe.contentDocument;
-	//for (i in differences) {
-	//	if (typeof iframe[i] != 'undefined') delete differences[i];
-	//	else if (globals[differences[i].type]) delete differences[i]
-	//}
-	//exceptions = 'addEventListener,document,location,navigator,window'.split(',');
-	//i = exceptions.length;
-	//while (--i) {
-	//	delete differences[exceptions[i]]
-	//}
-	//console.dir(differences);
-
-
-
 }); //end jquery function
