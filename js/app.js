@@ -8,7 +8,8 @@ jQuery(function($){
 			'<div class="rect4"></div>'+
 			'<div class="rect5"></div>'+
 			'</div>'),
-		omdbMovieURL = "http://www.omdbapi.com/?s=";
+		omdbMovieURL = "http://www.omdbapi.com/?apikey=3f81e88b&s=";
+		//omdbMovieURL = "http://www.omdbapi.com/?s=";
 	$('form').submit(function(e){
 		e.preventDefault(); // prevent the default behavior.
 
